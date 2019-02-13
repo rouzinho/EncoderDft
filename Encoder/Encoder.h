@@ -106,6 +106,7 @@ private:
   cedar::aux::StringParameterPtr mTopic;
   cedar::aux::StringParameterPtr mNameJoint;
   cedar::aux::DoubleParameterPtr mCenter;
+  cedar::aux::DoubleParameterPtr mUpper;
 
   std::string topicName;
   std::string jointName;
@@ -117,6 +118,9 @@ private:
   int size;
   double value;
   double dat;
+  double upper_bound;
+  double old_dat;
+  double tmp;
 
   //--------------------------------------------------------------------------------------------------------------------
   // parameters
