@@ -74,6 +74,7 @@ public slots:
   // none yet
   void reCompute();
   void reName();
+  void reBound();
   //--------------------------------------------------------------------------------------------------------------------
   // protected methods
   //--------------------------------------------------------------------------------------------------------------------
@@ -87,6 +88,7 @@ private:
   // The arguments are unused here
   void compute(const cedar::proc::Arguments&);
   void chatterCallback(const sensor_msgs::JointStateConstPtr& state);
+  double setPosition(double data);
   void reset();
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -106,12 +108,14 @@ private:
   cedar::aux::StringParameterPtr mTopic;
   cedar::aux::StringParameterPtr mNameJoint;
   cedar::aux::DoubleParameterPtr mCenter;
+  cedar::aux::DoubleParameterPtr mLower;
   cedar::aux::DoubleParameterPtr mUpper;
 
   std::string topicName;
   std::string jointName;
   ros::NodeHandle n;
   ros::Subscriber sub;
+  cv::Mat output;
   double sigma;
   double center;
   double pos;
@@ -119,8 +123,13 @@ private:
   double value;
   double dat;
   double upper_bound;
+  double lower_bound;
+  double shift;
+  double new_data;
+  double new_upper;
   double old_dat;
   double tmp;
+  double new_dat;
 
   //--------------------------------------------------------------------------------------------------------------------
   // parameters
