@@ -61,10 +61,10 @@ this->connect(this->mUpper.get(), SIGNAL(valueChanged()), this, SLOT(reBound()))
 void Encoder::compute(const cedar::proc::Arguments&)
 {
    ros::spinOnce();
-  std::cout << std::abs((std::abs(old_dat) - std::abs(dat))) << '\n';
+
   if(std::abs((std::abs(old_dat) - std::abs(dat))) > 0.02)
   {
-     std::cout << "---CHANGE---" << '\n';
+     //std::cout << "---CHANGE---" << '\n';
      old_dat = dat;
      new_dat = this->setPosition(dat);
      mGaussMatrixCenters.clear();
@@ -127,7 +127,7 @@ void Encoder::chatterCallback(const sensor_msgs::JointStateConstPtr& state)
      if(jointName.compare(state->name[j]) == 0)
      {
        dat = static_cast<double>(state->position[j]);
-       ROS_INFO("I heard: [%f]", dat);
+       //ROS_INFO("I heard: [%f]", dat);
      }
    }
 }
