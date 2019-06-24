@@ -72,6 +72,7 @@ void Encoder::compute(const cedar::proc::Arguments&)
      //change the Gaussian function with the value of the sensor.
      output = cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,value,mGaussMatrixSigmas,mGaussMatrixCenters,true);
   }
+  //std::cout << "--- " << new_dat << " ---" << '\n';
   this->mOutput->setData(output);
 }
 
