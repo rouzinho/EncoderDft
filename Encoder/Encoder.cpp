@@ -60,8 +60,10 @@ this->connect(this->mUpper.get(), SIGNAL(valueChanged()), this, SLOT(reBound()))
 // Generate a gaussian curve based on the inputs of the encoder
 void Encoder::compute(const cedar::proc::Arguments&)
 {
+   ros::Rate loop_rate(60);
+   loop_rate.sleep();
    ros::spinOnce();
-
+/*
   if(std::abs((std::abs(old_dat) - std::abs(dat))) > 0.02)
   {
      //std::cout << "---CHANGE---" << '\n';
@@ -71,8 +73,12 @@ void Encoder::compute(const cedar::proc::Arguments&)
      mGaussMatrixCenters.push_back(new_dat);
      //change the Gaussian function with the value of the sensor.
      output = cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,value,mGaussMatrixSigmas,mGaussMatrixCenters,true);
-  }
-  //std::cout << "--- " << new_dat << " ---" << '\n';
+  }*/
+  new_dat = this->setPosition(dat);
+  mGaussMatrixCenters.clear();
+  mGaussMatrixCenters.push_back(new_dat);
+  //change the Gaussian function with the value of the sensor.
+  output = cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,value,mGaussMatrixSigmas,mGaussMatrixCenters,true);
   this->mOutput->setData(output);
 }
 
