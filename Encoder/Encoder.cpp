@@ -25,31 +25,33 @@ mNameJoint(new cedar::aux::StringParameter(this, "Joint Name", "")),
 mLower(new cedar::aux::DoubleParameter(this,"lower",-1.0)),
 mUpper(new cedar::aux::DoubleParameter(this,"upper",1.0))
 {
-this->declareOutput("output", mOutput);
+   this->declareOutput("output", mOutput);
 
-mGaussMatrixSizes.push_back(100);
-mGaussMatrixSigmas.push_back(3.0);
-mGaussMatrixCenters.push_back(25.0);
-//init the variable that will get the sensor value
-dat = 0;
-old_dat = 0.5;
-value = 1.0;
-size = 100;
-lower_bound = -1.0;
-upper_bound = 1.0;
-output = cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,value,mGaussMatrixSigmas,mGaussMatrixCenters,true);
+   mGaussMatrixSizes.push_back(100);
+   mGaussMatrixSigmas.push_back(3.0);
+   mGaussMatrixCenters.push_back(25.0);
+   //init the variable that will get the sensor value
+   dat = 0;
+   old_dat = 0.5;
+   value = 1.0;
+   size = 100;
+   lower_bound = -1.0;
+   upper_bound = 1.0;
+   output = cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,value,mGaussMatrixSigmas,mGaussMatrixCenters,true);
 
-//ros::Rate loop_rate(40);
-//loop_rate.sleep();
-//ros::spinOnce();
+   //ros::Rate loop_rate(40);
+   //loop_rate.sleep();
+   //ros::spinOnce();
 
-this->connect(this->mSize.get(), SIGNAL(valueChanged()), this, SLOT(reCompute()));
-this->connect(this->mSigma.get(), SIGNAL(valueChanged()), this, SLOT(reCompute()));
-this->connect(this->mValue.get(), SIGNAL(valueChanged()), this, SLOT(reCompute()));
-this->connect(this->mTopic.get(), SIGNAL(valueChanged()), this, SLOT(reName()));
-this->connect(this->mNameJoint.get(), SIGNAL(valueChanged()), this, SLOT(reName()));
-this->connect(this->mLower.get(), SIGNAL(valueChanged()), this, SLOT(reBound()));
-this->connect(this->mUpper.get(), SIGNAL(valueChanged()), this, SLOT(reBound()));
+
+
+   this->connect(this->mSize.get(), SIGNAL(valueChanged()), this, SLOT(reCompute()));
+   this->connect(this->mSigma.get(), SIGNAL(valueChanged()), this, SLOT(reCompute()));
+   this->connect(this->mValue.get(), SIGNAL(valueChanged()), this, SLOT(reCompute()));
+   this->connect(this->mTopic.get(), SIGNAL(valueChanged()), this, SLOT(reName()));
+   this->connect(this->mNameJoint.get(), SIGNAL(valueChanged()), this, SLOT(reName()));
+   this->connect(this->mLower.get(), SIGNAL(valueChanged()), this, SLOT(reBound()));
+   this->connect(this->mUpper.get(), SIGNAL(valueChanged()), this, SLOT(reBound()));
 
 
 }
@@ -60,9 +62,10 @@ this->connect(this->mUpper.get(), SIGNAL(valueChanged()), this, SLOT(reBound()))
 // Generate a gaussian curve based on the inputs of the encoder
 void Encoder::compute(const cedar::proc::Arguments&)
 {
-   ros::Rate loop_rate(60);
-   loop_rate.sleep();
-   ros::spinOnce();
+   ros::Rate loop_rate(10);
+
+
+
 /*
   if(std::abs((std::abs(old_dat) - std::abs(dat))) > 0.02)
   {
@@ -74,12 +77,19 @@ void Encoder::compute(const cedar::proc::Arguments&)
      //change the Gaussian function with the value of the sensor.
      output = cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,value,mGaussMatrixSigmas,mGaussMatrixCenters,true);
   }*/
-  new_dat = this->setPosition(dat);
-  mGaussMatrixCenters.clear();
-  mGaussMatrixCenters.push_back(new_dat);
-  //change the Gaussian function with the value of the sensor.
-  output = cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,value,mGaussMatrixSigmas,mGaussMatrixCenters,true);
-  this->mOutput->setData(output);
+   new_dat = this->setPosition(dat);
+   //std::cout << new_dat << '\n';
+   mGaussMatrixCenters.clear();
+   mGaussMatrixCenters.push_back(new_dat);
+   //change the Gaussian function with the value of the sensor.
+   output = cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,value,mGaussMatrixSigmas,mGaussMatrixCenters,true);
+   this->mOutput->setData(output);
+
+   ros::spinOnce();
+   //loop_rate.sleep();
+   //ros::Duration d = ros::Duration(2, 0);
+   //d.sleep();
+
 }
 
 double Encoder::setPosition(double data)
@@ -121,6 +131,8 @@ void Encoder::reName()
    jointName = this->mNameJoint->getValue();
    const std::string tname = topicName;
    sub = n.subscribe(tname, 1000, &Encoder::chatterCallback,this);
+   //ros::Timer timer = n.createTimer(ros::Duration(1), &Encoder::timerCallback,this);
+
 }
 
 //callback for the subscriber. This one get the value of the sensor.

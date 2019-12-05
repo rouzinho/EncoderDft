@@ -46,6 +46,7 @@
 #include <cedar/auxiliaries/StringParameter.h>
 #include <cedar/auxiliaries/IntParameter.h>
 #include "ros/ros.h"
+#include <ros/spinner.h>
 #include "std_msgs/Float64.h"
 #include "sensor_msgs/JointState.h"
 
@@ -110,6 +111,7 @@ private:
   cedar::aux::DoubleParameterPtr mCenter;
   cedar::aux::DoubleParameterPtr mLower;
   cedar::aux::DoubleParameterPtr mUpper;
+  boost::shared_ptr<ros::AsyncSpinner> g_spinner;
 
   std::string topicName;
   std::string jointName;
