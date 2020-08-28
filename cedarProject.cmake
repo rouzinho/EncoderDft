@@ -95,6 +95,8 @@ if (NOT OpenCV_FOUND)
   message("Could not find opencv. You may experience problems linking to this library.")
 endif ()
 
+find_package(YARP REQUIRED)
+
 find_package(roscpp)
 if (roscpp_FOUND)
    include_directories(${roscpp_INCLUDE_DIRS})
