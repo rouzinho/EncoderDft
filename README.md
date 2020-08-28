@@ -34,11 +34,19 @@ The code was tested on ROS Kinetic Kame and Melodic Morenia
 
 ROS and Cedar are a bit to powerful to run on the same computer (if you have a big DFT model and a complex robot), so I recommend using 2 different computer.
 
+**INSTALL YARP**
+
+This last version of the plugin requires yarp (cedar built with yarp support - you don't have to do it if you didn't include YARP when building Cedar)
+
+https://www.yarp.it/install.html
+
+If you don't need it, remove the find_package(YARP REQUIRED) in the cedarProject.cmake
+
 ### Installing
 
 First clone the repository :
 
-`git clone https://github.com/rouzinho/EarListenerDft.git`
+`git clone https://github.com/rouzinho/EncoderDft.git`
 
 In the project.conf, change the CEDAR_HOME directory to your own :
 
@@ -56,7 +64,7 @@ Finally start the compilation :
 
 `make`
 
-You should see the plugin under the name libEarListener.so in the build/ repository
+You should see the plugin under the name libEncoder.so in the build/ repository
 
 ## Before Running the plugin
 
@@ -76,7 +84,6 @@ You can now go back to the cedar main interface and click on the Utilities tab.
 
 Drag the Encoder widget into the architecture panel. When your architecture is ready, you can start the simulation.
 You will see that the Encoder transform the input of a topic into a 1D Gaussian function.
-For this case, I read data from a noise sensor and use the value as amplitude of the gaussian function.
 
 
 ## Work in progress
